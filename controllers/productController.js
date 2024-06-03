@@ -5,8 +5,8 @@ const fs = require("fs");
 
 // create new product  ---> Admin
 exports.createProduct = async (req, res, next) => {
-  console.log(req.body);
-  console.log(req.files);
+  // console.log(req.body);
+  // console.log(req.files);
 
   const {
     productName,

@@ -3,9 +3,9 @@ const sendToken = require("../utils/jwtToken");
 const cloudinary = require("../cloudinary/index");
 const validator = require("validator");
 const fs = require("fs");
+const Address = require("../models/AddressModel");
 
 exports.getUserDetails = async (req, res) => {
-  console.log(req.user.id);
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -184,5 +184,97 @@ exports.updateUserRole = async (req, res) => {
   } catch (error) {
     console.log("Error in updateUserRole controller", error.message);
     res.status(500).json({ status: "fail", message: "Internal Server Error" });
+  }
+};
+
+exports.addAddress = async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    company,
+    address1,
+    address2,
+    city,
+    country,
+    postalCode,
+    phone,
+  } = req.body;
+
+  const userId = req.user.id;
+
+  try {
+    if (!firstName) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Firstname is required" });
+    }
+    if (!lastName) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Lastname is required" });
+    }
+    if (!address1) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Address1 is required" });
+    }
+    if (!city) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "City is required" });
+    }
+    if (!country) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Country is required" });
+    }
+    if (!postalCode) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Postal code is required" });
+    }
+    if (!phone) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Phone is required" });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "No user found with that id" });
+    }
+
+    let address = await Address.findOne({ userId });
+
+    if (!address) {
+      address = new Address({ userId, address: [] });
+    }
+
+    const newAddress = {
+      firstName,
+      lastName,
+      company,
+      address1,
+      address2,
+      city,
+      country,
+      postalCode,
+      phone,
+    };
+
+    address.address.push(newAddress);
+    await address.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "New address addded successfully",
+      address,
+    });
+  } catch (error) {
+    console.log("Error in addAddress controller", error);
+    res.status(500).json({ status: "fail", message: "Server error" });
   }
 };

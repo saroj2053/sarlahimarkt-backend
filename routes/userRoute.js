@@ -30,6 +30,10 @@ router
   .route("/password/update")
   .patch(authController.isAuthenticatedUser, userController.updatePassword);
 
+router
+  .route("/address")
+  .post(authController.isAuthenticatedUser, userController.addAddress);
+
 // for admin --> getAllUsers
 
 router

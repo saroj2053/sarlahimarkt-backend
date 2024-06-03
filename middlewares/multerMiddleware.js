@@ -3,7 +3,6 @@ const path = require("path");
 
 // configuring multer disk storage in order to save the file on the disk
 
-console.log("control here");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");

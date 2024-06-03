@@ -8,11 +8,14 @@ const DB = process.env.DATABASE.replace(
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(DB);
-    console.log("Awaiting connection to mongodb...")
-    console.log(
-      `Successfully connected to mongodb at ${conn.connection.host}`.bgGreen
-        .gray
-    );
+    if (!conn) {
+      console.log("Awaiting connection to mongodb...");
+    } else {
+      console.log(
+        `Successfully connected to mongodb at ${conn.connection.host}`.underline
+          .italic.yellow
+      );
+    }
   } catch (err) {
     console.log(err);
   }
