@@ -13,19 +13,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    address: [
-      {
-        firstName: String,
-        lastName: String,
-        company: String,
-        address1: String,
-        address2: String,
-        city: String,
-        country: String,
-        postalCode: String,
-        phone: String,
-      },
-    ],
     avatar: String,
     role: {
       type: String,
@@ -41,6 +28,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    addresses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Address",
+      },
+    ],
   },
   { timestamps: true }
 );

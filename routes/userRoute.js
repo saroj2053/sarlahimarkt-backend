@@ -5,7 +5,6 @@ const upload = require("../middlewares/multerMiddleware");
 
 const router = express.Router();
 
-// authentication routes for user
 router.route("/register").post(authController.register);
 router.route("/login").post(authController.login);
 
@@ -13,7 +12,6 @@ router
   .route("/logout")
   .post(authController.isAuthenticatedUser, authController.logout);
 
-// user routes
 router
   .route("/profile")
   .get(authController.isAuthenticatedUser, userController.getUserDetails);
@@ -34,8 +32,11 @@ router
   .route("/address")
   .post(authController.isAuthenticatedUser, userController.addAddress);
 
-// for admin --> getAllUsers
+router
+  .route("/address")
+  .get(authController.isAuthenticatedUser, userController.fetchAddressData);
 
+// for admin --> getAllUsers
 router
   .route("/allUsers")
   .get(

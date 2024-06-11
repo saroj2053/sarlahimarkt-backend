@@ -55,21 +55,6 @@ exports.createProduct = async (req, res, next) => {
 
     // Traversing through the files obtained after the multer processing
     for (const file of req.files) {
-      // console.log(file.path);
-      // const result = await cloudinary.uploader.upload(file.path, {
-      //   folder: "SarlahiMarkt/ProductPics",
-      // });
-
-      // console.log(result);
-
-      // // Storing the cloudinary image urls into imageUrls array
-      // imageUrls.push(result.secure_url);
-
-      // // Deleting the local file
-      // fs.unlink(file.path, (err) => {
-      //   if (err) console.error("Failed to delete local file:", err);
-      // });
-
       try {
         console.log(`Uploading file: ${file.path}`);
         const result = await cloudinary.uploader.upload(file.path, {
@@ -81,7 +66,7 @@ exports.createProduct = async (req, res, next) => {
         // Storing the Cloudinary image URLs into imageUrls array
         imageUrls.push(result.secure_url);
 
-        // Deleting the local file
+        // Deleting the local file in the uploads directory
         fs.unlink(file.path, (err) => {
           if (err) console.error("Failed to delete local file:", err);
         });
@@ -212,7 +197,7 @@ exports.searchProduct = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in searchProduct controller", error.message);
-    res.status(500).josn({
+    res.status(500).json({
       status: "fail",
       message: "Internal Server Error",
     });

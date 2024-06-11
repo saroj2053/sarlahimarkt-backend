@@ -7,7 +7,7 @@ const Address = require("../models/AddressModel");
 
 exports.getUserDetails = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).populate("addresses");
     if (!user) {
       return res.status(404).json({
         status: "fail",
@@ -239,21 +239,7 @@ exports.addAddress = async (req, res) => {
         .json({ status: "fail", message: "Phone is required" });
     }
 
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "No user found with that id" });
-    }
-
-    let address = await Address.findOne({ userId });
-
-    if (!address) {
-      address = new Address({ userId, address: [] });
-    }
-
-    const newAddress = {
+    const addressToSave = {
       firstName,
       lastName,
       company,
@@ -265,16 +251,45 @@ exports.addAddress = async (req, res) => {
       phone,
     };
 
-    address.address.push(newAddress);
-    await address.save();
+    const newAddress = await Address.create(addressToSave);
+
+    const linkedUser = await User.findById(userId);
+
+    linkedUser.addresses.push(newAddress._id);
+
+    const updatedUser = await User.findByIdAndUpdate(userId, linkedUser, {
+      new: true,
+    });
 
     res.status(200).json({
       status: "success",
       message: "New address addded successfully",
-      address,
+      user: updatedUser,
     });
   } catch (error) {
     console.log("Error in addAddress controller", error);
     res.status(500).json({ status: "fail", message: "Server error" });
+  }
+};
+
+exports.fetchAddressData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const user = await User.findById(userId).populate("addresses");
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "User not found, please log in..." });
+    } else {
+      res.status(200).json({
+        status: "success",
+        message: "Address retrieved successfully",
+        address: user.addresses,
+      });
+    }
+  } catch (error) {
+    console.log("Error in fetchAddressData controller", error);
+    res.status(500).json({ status: "fail", message: "Internal Server Error" });
   }
 };
