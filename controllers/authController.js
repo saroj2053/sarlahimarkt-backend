@@ -52,9 +52,9 @@ exports.register = async (req, res) => {
       });
     }
 
-    // PROFILE AVATAR FROM "https://avatar.iran.liara.run"
+    // PROFILE AVATAR FROM https://ui-avatars.com/api/?uppercase=false&name=Muskan+Sah&background=random&size=128&length=2&bold=true&format=svg
     const queryParamsForAvatar = name.replace(" ", "+");
-    const profileAvatar = `https://avatar.iran.liara.run/username?username=${queryParamsForAvatar}`;
+    const profileAvatar = `https://ui-avatars.com/api/?uppercase=false&name=${queryParamsForAvatar}&background=random&size=64&length=2&bold=true&format=svg`;
 
     const user = {
       name,
@@ -169,7 +169,7 @@ exports.isAuthenticatedUser = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
+    return next(err);
   }
 };
 

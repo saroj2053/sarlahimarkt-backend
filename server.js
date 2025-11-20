@@ -10,6 +10,7 @@ const productRouter = require("./routes/productRoute");
 const cartRouter = require("./routes/cartRoute");
 const wishlistRouter = require("./routes/wishlistRoute");
 
+const errorMiddleware = require("./middlewares/errorMiddleware");
 const app = express();
 
 // connecting to database
@@ -31,6 +32,8 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/wishlist", wishlistRouter);
+
+app.use(errorMiddleware);
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to my Ecommerce Site👋🔥</h1>");
