@@ -39,57 +39,6 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
-    // rating: {
-    //   type: Number,
-    //   default: 0,
-    // },
-
-    // images: [
-    //   {
-    //     public_id: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     url: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //   },
-    // ],
-
-    // numOfReviews: {
-    //   type: Number,
-    //   default: 0,
-    // },
-
-    // reviews: [
-    //   {
-    //     name: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     rating: {
-    //       type: Number,
-    //       required: true,
-    //     },
-    //     comment: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //   },
-    // ],
-
-    // user: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
-
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
   },
   { timestamps: true }
 );
