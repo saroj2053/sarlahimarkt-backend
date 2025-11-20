@@ -9,6 +9,7 @@ const userRouter = require("./routes/userRoute");
 const productRouter = require("./routes/productRoute");
 const cartRouter = require("./routes/cartRoute");
 const wishlistRouter = require("./routes/wishlistRoute");
+const paymentRouter = require("./routes/PaymentRoute");
 
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const app = express();
@@ -19,9 +20,7 @@ require("./database");
 // Middlewares
 app.use(express.json());
 app.use(morgan("dev"));
-
 app.use(cookieParser());
-
 app.use(cors());
 
 // to serve static files
@@ -32,6 +31,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/wishlist", wishlistRouter);
+app.use("/api/v1/payment", paymentRouter);
 
 app.use(errorMiddleware);
 
